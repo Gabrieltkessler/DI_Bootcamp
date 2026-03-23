@@ -1,0 +1,41 @@
+[33mcommit 0f798f42867175e4ee5064d8d7cdd71688b1a976[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: GabrielK <gabriel@oppquest.com>
+Date:   Mon Mar 23 17:40:38 2026 +0200
+
+    Convert challenge files to Python files
+
+[33mcommit 0777c7d1495ddcd9dafe7c21373a4d41e6fa85b6[m
+Author: GabrielK <gabriel@oppquest.com>
+Date:   Mon Mar 23 17:37:52 2026 +0200
+
+    Fix week1 rename to week01
+
+[33mcommit e7e98aca364806ce663203ef2a951307bd7c7ead[m
+Author: GabrielK <gabriel@oppquest.com>
+Date:   Mon Mar 23 17:36:19 2026 +0200
+
+    Rename weeks to use leading zeros
+
+[33mcommit 3e8173ff989645a4b8d644730407b6a59c1e93f7[m
+Author: GabrielK <gabriel@oppquest.com>
+Date:   Mon Mar 23 17:32:22 2026 +0200
+
+    Recreate week1 with proper structure
+
+[33mcommit 556d00b68265cd9e01af37ca929c7040c2ed584e[m
+Author: GabrielK <gabriel@oppquest.com>
+Date:   Mon Mar 23 17:28:59 2026 +0200
+
+    update
+
+[33mcommit 997424eceb97e50890e804a3d28fc79c25fa9a85[m
+Author: GabrielK <gabriel@oppquest.com>
+Date:   Mon Mar 23 17:25:40 2026 +0200
+
+    Folders update
+
+[33mcommit cfa75045c5672134747432d6d4fab53b3605fc8e[m
+Author: GabrielK <gabriel@oppquest.com>
+Date:   Sun Mar 15 22:35:27 2026 +0200
+
+    Initial Commit
