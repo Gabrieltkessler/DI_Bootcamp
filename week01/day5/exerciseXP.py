@@ -40,18 +40,6 @@ else:
 # Exercise 3: Zara
 # Instructions: Create and manipulate a dictionary that contains information about the Zara brand.
 
-#Create a dictionary called brand with the provided data.
-#Modify and access the dictionary as follows:
-    #Change the value of number_stores to 2.
-    #Print a sentence describing Zara’s clients using the type_of_clothes key.
-    #Add a new key country_creation with the value Spain.
-    #Check if international_competitors exists and, if so, add “Desigual” to the list.
-    #Delete the creation_date key.
-    #Print the last item in international_competitors.
-    #Print the major colors in the US.
-    #Print the number of keys in the dictionary.
-    #Print all keys of the dictionary.
-
 brand = {
     "name": "Zara",
     "creation_date": 1975,
@@ -64,5 +52,27 @@ brand = {
     "Spain": "red", 
     "US": ["pink", "green"]}
 }
+
+#Create a dictionary called brand with the provided data.
+#Modify and access the dictionary as follows:
+    #Change the value of number_stores to 2.
+brand["number_stores"] = 2
+    #Print a sentence describing Zara’s clients using the type_of_clothes key.
+print(f"Zara has clothes for everone. soome for {brand["type_of_clothes"][0]}, Some for {brand["type_of_clothes"][1]}, and even {brand["type_of_clothes"][2]}!")
+    #Add a new key country_creation with the value Spain.
+brand.update({"country_creation":"Spain"})
+    #Check if international_competitors exists and, if so, add “Desigual” to the list.
+if "international_competitors" in brand:
+    band["international_competitors"].append("Desigual")
+    #Delete the creation_date key.
+del brand["creation_date"]
+    #Print the last item in international_competitors.
+print(brand[.pop(]"international_competitors"][-1])
+    #Print the major colors in the US.
+print(brand["major_color"]["US"])
+    #Print the number of keys in the dictionary.
+print(len(brand.keysx()))
+    #Print all keys of the dictionary.
+print(brand.key())
 
 
