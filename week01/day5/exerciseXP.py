@@ -75,4 +75,26 @@ print(len(brand.keysx()))
     #Print all keys of the dictionary.
 print(brand.key())
 
+# Exercise 4: Disney Characters
+# Instructions: You are given a list of Disney characters. Create three dictionaries based on different patterns as shown below:
 
+users = ["Mickey", "Minnie", "Donald", "Ariel", "Pluto"]
+
+#1. Create a dictionary that maps characters to their indices:
+char_to_index = {}
+for i, user in enumerate(users):
+    char_to_index[user] = i
+print(char_to_index)
+
+#2. Create a dictionary that maps indices to characters:
+index_to_char = {}
+for i, user in enumerate(users):
+    index_to_char[i] = user
+print(index_to_char)
+
+#3. Create a dictionary where characters are sorted alphabetically and mapped to their indices:
+sorted_users = sorted(users)
+sorted_char_to_index = {}
+for i, user in enumerate(sorted_users):
+    sorted_char_to_index[user] = i
+print(sorted_char_to_index)
