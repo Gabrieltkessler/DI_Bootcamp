@@ -29,15 +29,15 @@ def player_input(board, player):
             print("Invalid input. Please enter row and column.")
 
 def check_win(board, player):
-    # check rows
+    # checking rows
     for row in board:
         if all(cell == player for cell in row):
             return True
-    # check columns
+    # checking columns
     for column in range(3):
         if all(board[row][column] == player for row in range(3)):
             return True
-    # check diagonals
+    # checking diagonals
     if all(board[i][i] == player for i in range(3)):
         return True
     if all(board[i][2 - i] == player for i in range(3)):
@@ -59,19 +59,19 @@ def play():
         row, column = player_input(board, current_player)
         board[row][column] = current_player
 
-        # check win
+        # checking win
         if check_win(board, current_player):
             display_grid(board)
             print(f"Player {current_player} wins!")
             break
 
-        # check tie
+        # checking tie
         if check_tie(board):
             display_grid(board)
             print("It's a tie!")
             break
 
-        # switch player:
+        # switching player:
         if current_player == "X":
             current_player = "O"
         else:
