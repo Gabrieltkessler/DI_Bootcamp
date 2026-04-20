@@ -9,6 +9,15 @@ class Farm:
         else:
             self.animals[animal_type] = count
 
+    def get_animal_types(self):
+        return sorted(self.animals.keys())
+
+    def get_short_info(self):
+        if count > 1:
+            return f"{self.name}'s Farm has {get_animal_types}s"
+        else:
+            return f"{self.name}'s Farm has a {get_animal_types}"
+
     def get_info(self):
         output = f"{self.name}'s Farm \n\n"
 
