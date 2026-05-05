@@ -1,0 +1,27 @@
+#Exercise 1: Introduction to Data Analysis (Easy)
+
+In today’s data driven world, more and more data is being generated every moment. There is even data about data being produced, known as metadata.
+
+Data analysis is a powerful process that enables organizations to collect relevant data, clean it, manipulate it, explore it, and ultimately visualize it in order to gain meaningful insights.
+Without the management of clean, accurate, and relevant data, organizations risk losing money, missing opportunities, and operating with critical inaccuracies across teams and objectives.
+For example, in a sales organization, if key data points are not tracked such as customer feedback, revenue generated, where it came from, when it was generated, and how it was generated, the organization will struggle to understand what drives success. Without that visibility, it becomes nearly impossible to consistently generate revenue and scale effectively.
+
+Collecting relevant data, scrubbing it, manipulating it, analyzing it, and visualizing it provides tremendous value to any organization.
+
+#Exercise 2: Dataset Loading and Initial Analysis
+
+This data set 'Time Americans Spend Sleeping.csv' contains annual sleep records for Americans ranging from 15 years old to 65+.
+This data includes the types of days they are sleeping, their gender, and the average hours per day. it includes 945 rows of data and is used for learning the different sleep patterns of Americans.
+
+This data set clean_dataset.csv contains credit card records of Americans citizens.
+This data set contains age, gender, ethnicity, marital status, financial history and more.
+There's 690 rows of data in the set, and it's used for gathering information on credit card users to make decisions.
+
+#Exercise 3: Identifying Data Types
+
+This dataset is mainly Quantitative as it has 13 quantitative columns(int: 10, float: 3 ) and only 3 Qualitative object columns.
+This is what I used to find out:
+dtype_count = df.dtypes.value_counts()
+print(dtype_count)
+
+# Exercise 4: Exploring Data Types
