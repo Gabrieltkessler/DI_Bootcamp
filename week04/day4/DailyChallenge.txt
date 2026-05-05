@@ -1,0 +1,13 @@
+Task: Find and present in writing a recent news story or business case study where data analysis played a crucial role. This could involve situations where data analysis led to a breakthrough, influenced a major decision, or uncovered significant trends impacting the business or societal context.
+
+Step 1: Search for a relevant case or news story. Consider sources like business journals, news websites, or scientific publications.
+Step 2: Analyze the role of data analysis in the chosen story. Pay attention to what data was analyzed, the methods used, and the outcomes or decisions driven by the analysis.
+Step 3: Ask yourself how the data analysis impacted the situation. Consider questions like: What would have been different without data analysis? How did data analysis contribute to solving a problem or making a decision?
+Step 4: Present your findings in writing, Focus on explaining the significance of data analysis in the context of your chosen story.
+The aim of this activity is to provide practical insights into how data analysis is applied in real-world scenarios and to appreciate its value in shaping modern decision-making processes.
+
+
+During the 3.5-year COVID-19 pandemic (January 20, 2020 – May 11, 2023), tens of millions of American taxpayers were fined and penalized for late payments and delayed tax filings, despite widespread deadline disruptions. The data for this analysis was sourced from FoxBusiness.com.
+These taxpayers may now be eligible for significant refunds, as many of the penalties were imposed during a period marked by shifting deadlines and extraordinary circumstances.
+The data analyst on this project was tasked with identifying all taxpayers who were required to file or pay taxes within this timeframe but missed the adjusted deadlines. The analysis then quantified the amounts owed and paid, along with the percentage discrepancies.
+This flawed policy had a substantial financial impact on a large segment of the population during the pandemic. Through careful data analysis, a path toward remediation is now emerging.
