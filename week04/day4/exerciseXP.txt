@@ -25,3 +25,78 @@ dtype_count = df.dtypes.value_counts()
 print(dtype_count)
 
 # Exercise 4: Exploring Data Types
+
+#Identify and list which columns in your dataset are qualitative and which are quantitative.
+
+df_types = df.dtypes
+
+quan_type = []
+qual_type = []
+
+for col, dtype in df_types.items():
+  if dtype == 'object':
+    qual_type.append(col)
+  else:
+    quan_type.append(col)
+
+print(f"Qualitative types: {qual_type}")
+print(f"Quantitative types: {quan_type}")
+
+Qualitative types: ['Species']
+Quantitative types: ['Id', 'SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm']
+
+The species column is Qualitative because it's simply listing the type of species in string format.
+All the other columns are quantitative because they're offering data in either integer or float format.
+
+# Exercise 5: Basic Observation Skills in Data Analysis.
+In this 'Time American Spend Sleeping' dataset has interesting columns such as:
+Sex, age group and avg hrs per day sleeping. Using just by grouping the values from these columns and aggregating the data, we can find out the sleeping patterns of specific age groups, specific genders, and what is the most efficient amount of sleep for each group.
+
+# Exercise 6: Identifying Data Types
+
+Below are various data sources. Identify whether each one is an example of structured or unstructured data.
+
+- A company’s financial reports stored in an Excel file. #structured
+- Photographs uploaded to a social media platform. #unstructured
+- A collection of news articles on a website. #structured
+- Inventory data in a relational database. #structured
+- Recorded interviews from a market research study. #unstructured
+
+# Exercise 7: Transformation Exercise
+
+For each of the following unstructured data sources, propose a method to convert it into structured data. Explain your reasoning.
+
+- A series of blog posts about travel experiences. #categories each post but location of travel, language spoken, climate.
+- Audio recordings of customer service calls. #Identify customer concerns, questions, and feedback. Create a structured list of qualitative data.
+- Handwritten notes from a brainstorming session. #Highlight keywords and groupby those words.
+- A video tutorial on cooking. #Identify all the ingredients and orderby them to create a recipe.
+
+# Exercise 8 : Import a file from Kaggle
+
+import pandas as pd
+df = pd.read_csv('train.csv')
+df = pd.DataFrame(df)
+df.head()
+
+# Exercise 9 : Export a dataframe to excel format and JSON format.
+
+import pandas as pd
+df = pd.DataFrame([
+    {'name': 'Tony', 'age': 24, 'gender': 'male'}
+])
+
+df.to_csv('example_csv.csv', index=False)
+
+import pandas as pd
+df = pd.DataFrame([
+    {'name': 'Tony', 'age': 24, 'gender': 'male'}
+])
+
+df.to_json('example_json.json')
+
+Exercise 10: Reading JSON Data
+
+import pandas as pd
+df = pd.read_json('posts.json')
+df = pd.DataFrame(df)
+df.head()
