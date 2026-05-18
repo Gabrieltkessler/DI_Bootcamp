@@ -53,4 +53,39 @@ plt.xticks(rotation=45)
 plt.title('Distribution of CGPA')
 plt.show()
 
-#Exercise 5: Comparing Anxiety Levels Across Different Genders
+# Exercise 5: Comparing Anxiety Levels Across Different Genders
+
+sns.countplot(
+    data=df,
+    x='Choose your gender',
+    hue='Do you have Anxiety?',
+    palette='Set2')
+plt.xlabel('Gender')
+plt.ylabel('Count')
+plt.title('Anxiety Levels Across Different Genders')
+plt.show()
+
+# Exercise 6: Exploring the Relationship Between Age and Panic Attacks
+
+import pandas as pd
+import numpy as np
+from scipy import stats
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df['attack_response_numeric'] = df['Do you have Panic attack?'].map({'Yes':1, 'No':0})
+attack_count = df['attack_response_numeric']
+
+
+sns.scatterplot(
+    data=df,
+    x='Age',
+    y='attack_response_numeric',
+    hue='Do you have Panic attack?',
+    palette='Set2')
+
+plt.xlabel('Age')
+plt.ylabel('Panic Attacks')
+plt.title('Relationship Between Age and Panic Attacks')
+
+plt.show()
