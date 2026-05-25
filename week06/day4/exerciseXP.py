@@ -81,7 +81,7 @@ if p_value < alpha:
     print("reject null hypothesis")
     print("There is significant evidence that the training program helps.")
 else:
-    print("reject null hypothesis")
+    print("Failed to reject null hypothesis")
     print("There is no significant evidence that the training program helps.")
 
 #Exercise 7 : Complex Array Comparison
