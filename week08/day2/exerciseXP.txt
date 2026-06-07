@@ -1,0 +1,143 @@
+Exercise 1 : Defining the Problem and Data Collection for Loan Default Prediction
+
+Loan Default Prediction: Problem Definition and Data Collection Plan**
+
+**Problem Statement**
+
+The objective of this project is to predict whether a borrower will default on a loan. The target variable is loan default status (default or no default), and the prediction will support lending decisions and risk assessment.
+
+**Data Types Required**
+
+Applicant income and income history should be collected because stable income is often associated with a lower risk of default.
+Employment information, including employment status and length of employment, should be collected because job stability can influence a borrower's ability to repay a loan.
+Credit scores should be collected because they summarize a borrower's historical credit behavior and repayment reliability.
+Current debt balances and debt-to-income ratios should be collected because high debt levels may increase the likelihood of default.
+Loan details such as loan amount, loan term, and loan purpose should be collected because different loan characteristics may affect repayment risk.
+Repayment history and previous loan performance should be collected because past payment behavior is often a strong predictor of future behavior.
+Bank account activity, including overdrafts and transaction history, should be collected because it provides insight into a borrower's financial stability and cash flow management.
+
+**Data Sources**
+
+Internal bank records can provide historical loan performance data, customer account information, and repayment histories. These records can be integrated directly from the institution's databases.
+Credit bureau data can provide credit scores, credit utilization, and external borrowing history. This data can be integrated through data-sharing agreements and secure APIs.
+Loan application forms can provide personal, employment, and financial information supplied by applicants during the loan application process.
+Bank statements can provide income, spending patterns, and account activity over time. These documents can be collected with customer consent and processed through secure systems.
+Employment verification services may be used to confirm employment status and income information provided by applicants.
+
+**Risks and Constraints**
+
+This project must comply with privacy and financial regulations governing the collection and use of personal financial information. Data quality issues such as missing, inaccurate, or outdated records can reduce model accuracy. Sampling bias may occur if the training data does not adequately represent all borrower groups, leading to unfair predictions. Strong data governance practices are required to ensure data security, access control, transparency, and compliance with regulatory requirements. Customer consent and appropriate data protection measures must be maintained throughout the project.
+
+Exercise 2 : Feature Selection and Model Choice for Loan Default Prediction
+
+1. Selected Features and Justification
+
+The features most relevant to predicting loan default are **age**, **employment length**, **annual income**, **credit score**, **loan amount**, **interest rate**, **debt-to-income ratio**, **number of delinquencies**, **home ownership status**, and **loan purpose**.
+
+* **Age:** Higher age often correlates with greater financial maturity and a more established career, both of which reduce default risk.
+* **Employment Length:** A longer employment history indicates job stability, which strongly correlates with steady financial inflows and consistent repayment behavior.
+* **Annual Income:** Higher annual income provides a financial cushion that reduces the likelihood of default, especially when the income is significantly larger than the loan amount.
+* **Credit Score:** A high credit score serves as direct historical evidence of a borrower’s reliability and past consistency in meeting payment obligations.
+* **Loan Amount:** Smaller loan amounts are typically easier to clear, whereas large balances carried over a long period increase the risk exposure and the overall chance of default.
+* **Interest Rate:** Higher interest rates increase the overall cost of borrowing, which directly inflates the monthly payment burden and elevates default risk.
+* **Debt-to-Income Ratio:** A high ratio signifies that existing debt obligations are heavily consuming the borrower's income, making it difficult to absorb new debt payments safely.
+* **Number of Delinquencies:** A history of past delinquencies establishes a behavioral pattern of failing to meet financial obligations, which strongly predicts future default.
+* **Home Ownership:** Homeownership can indicate financial stability and an active mortgage track record, though it must be carefully analyzed against the borrower's total existing debt burden.
+* **Loan Purpose:** The intent behind the loan (e.g., debt consolidation, business, or personal use) provides critical context regarding the borrower's strategic ability and motivation to repay.
+
+## 2. Excluded Features
+
+* **State:** This feature was excluded because geographic location alone does not provide a strong or direct enough signal of an individual’s financial capacity to justify its inclusion in the model.
+* **Zip Code:** Granular location data like zip code was omitted because it introduces excessive noise and potential overfitting without offering concrete evidence of a borrower's likelihood to default.
+
+## 3. Data Processing Conclusion
+
+To handle categorical variables, I will use one-hot encoding to transform each unique category into a new binary column consisting only of 1s and 0s. To handle missing values, I will impute the gaps by calculating and applying the median of that specific feature's column.
+
+Exercise 3 : Training, Evaluating, and Optimizing the Model
+1. Candidate Model Selection
+
+For a loan default prediction task, **Logistic Regression** and **XGBoost (Extreme Gradient Boosting)** are excellent candidate models. Logistic Regression is highly suitable because it provides a clear, interpretable baseline and outputs well-calibrated probabilities that directly map to financial risk. XGBoost is an ideal secondary choice because its ensemble tree structure excels at capturing non-linear relationships and complex interactions between features like income, credit score, and debt-to-income ratios.
+
+## 2. Evaluation Plan
+
+To evaluate the model's performance effectively, the dataset will first be split into an **80% training set** and a **20% holdout test set**.
+Within the training set, a **5-fold cross-validation** strategy will be implemented to ensure the model generalizes well across different subsets of the data.
+Because default prediction is highly sensitive to both missed defaults and false alarms, the evaluation metrics reported will include **Precision**, **Recall**, and the **Area Under the Precision-Recall Curve (PR-AUC)**.
+The final decision threshold will not simply default to 0.5; instead, it will be chosen by optimizing a business cost-benefit matrix that penalizes False Negatives (uncredited defaults) much more heavily than False Positives (rejected good applicants).
+
+## 3. Addressing Class Imbalance
+
+Class imbalance is a critical hurdle in loan prediction since the vast majority of applicants typically do not default.
+To address this, **stratified splitting** will be enforced during both the initial data split and the cross-validation folds to guarantee that the proportion of defaulters remains consistent across all subsets.
+Additionally, internal **class weights** (such as the `scale_pos_weight` parameter in XGBoost) will be utilized during training to heavily penalize the model when it misclassifies the minority default class.
+If further balancing is required, synthetic oversampling techniques like **SMOTE** will be applied, but they will strictly be restricted to the training folds to keep the validation data realistic.
+
+## 4. Hyperparameter Optimization and Leakage Prevention
+
+To safely iterate on hyperparameters, a randomized search or Bayesian optimization will be wrapped entirely within a pipeline using scikit-learn's `GridSearchCV` or `HalvingGridSearchCV`. This structure ensures that data preprocessing steps, such as median imputation and scaling, are computed exclusively on the active training folds and never glimpse the validation folds, thereby completely eliminating data leakage.
+
+Exercise 4 : Designing Machine Learning Solutions for Specific Problems
+ 1. Predicting Stock Prices
+For this scenario, a Supervised Regression model is the most suitable paradigm because the goal is to predict a continuous numerical value based on historical, labeled data.
+Input Data: The input data consists of historical stock features such as past closing prices, trading volumes, and technical indicators over a specific time series.
+Output: The output is a predicted future continuous numerical value representing the stock price at a specific point in time.
+Learning Signal/Objective: The learning signal is an explicit supervisor error, where the model minimizes the difference between its predicted stock price and the actual observed price in the training data.
+
+2. Organizing a Library of Books
+An Unsupervised Clustering model is the most appropriate choice for this task because the objective is to uncover hidden structures and group items based on inherent similarities without predefined labels.
+Input Data: The input data consists of unlabelled text elements from the books, including text embeddings of the summaries, word frequencies, and book lengths.
+Output: The output is a set of distinct, unlabelled clusters or groupings that categorize similar books together based on their shared features.
+Learning Signal/Objective: The learning signal is an intrinsic similarity metric, where the objective is to maximize the mathematical closeness of books within the same group while maximizing the distance between different groups.
+
+3. Program a Robot to Navigate a Maze
+A Reinforcement Learning approach is the correct paradigm for this problem because it involves an autonomous agent interacting with a dynamic environment to learn an optimal sequence of decisions.
+Input Data: The input data consists of the current state of the environment, which includes the robot's sensor readings and its exact spatial coordinates within the maze.
+Output: The output is a discrete action chosen by the robot at each step, such as moving forward, turning left, or turning right.
+Learning Signal/Objective: The learning signal is a scalar reward function that penalizes hitting walls and rewards the agent for finding the exit, guiding the robot to discover the shortest path over time through trial and error.
+
+Exercise 5 : Designing an Evaluation Strategy for Different ML Models
+
+1. Supervised Learning Model (Binary Classification)
+
+Example: Classifying emails as scam or legitimate.
+
+Evaluation Strategy:
+To evaluate the model, I would split the dataset into training and testing sets and use cross-validation to ensure the model performs consistently across different subsets of data.
+
+The following metrics would be used:
+Accuracy – Measures the percentage of correctly classified emails.
+Precision – Measures how many emails classified as scams are actually scams.
+Recall – Measures how many actual scam emails are successfully detected.
+F1-Score – Provides a balance between precision and recall.
+ROC Curve and AUC – Evaluates the model's ability to distinguish between scam and legitimate emails across different classification thresholds.
+
+Challenges and Limitations:
+One challenge is selecting the most relevant features and handling missing or inconsistent data. Another limitation is that email datasets are often imbalanced, meaning there may be far fewer scam emails than legitimate ones, which can make accuracy misleading.
+
+2. Unsupervised Learning Model (Clustering)
+
+Example: Clustering medical images into groups with similar characteristics.
+
+Evaluation Strategy:
+Silhouette Score – Measures how well each data point fits within its assigned cluster compared to other clusters.
+Elbow Method – Helps determine the optimal number of clusters by examining the reduction in clustering error as the number of clusters increases.
+Davies-Bouldin Index or other cluster validation metrics – Measures cluster separation and compactness.
+
+Additionally, I would visually inspect clusters and consult domain experts to determine whether the groupings are meaningful from a medical perspective.
+
+Challenges and Limitations:
+The biggest challenge is the lack of ground-truth labels, making it difficult to know whether the clusters are truly correct. Results can also vary significantly depending on the features selected and the chosen number of clusters.
+
+3. Reinforcement Learning Model
+
+Example: A GPS navigation system that learns to suggest the fastest route.
+
+Evaluation Strategy:
+Cumulative Reward – The total reward accumulated over time, representing how successful the routing decisions are.
+Average Travel Time – Measures whether routes become more efficient.
+Convergence – Determines whether the learning process stabilizes and consistently produces good routes.
+Exploration vs. Exploitation Balance – Ensures the agent continues exploring new routes while taking advantage of known good routes.
+
+Challenges and Limitations:
+Evaluating reinforcement learning models can take a long time because feedback is received only after actions are taken. Environmental conditions such as traffic patterns may change over time, making evaluation more difficult. In addition, balancing exploration and exploitation is challenging because too much exploration can reduce performance, while too little exploration may prevent the model from finding better solutions.
