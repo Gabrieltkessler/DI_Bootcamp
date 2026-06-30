@@ -14,13 +14,13 @@ This guided notebook follows the **content on the platform**. Some cells are **p
 
 ## Objectives
 
-**What you will learn**
+**What you will learn**  
 - The fundamentals of deep learning and neural networks.
 - How to build and train simple neural networks using TensorFlow or Keras.
 - The concepts of forward and backward propagation.
 - How to visualize and interpret model predictions.
 
-**What you will create**
+**What you will create**  
 - A simple perceptron-based decision system.
 - A neural network for classifying handwritten digits from the MNIST dataset.
 - A forward propagation calculation for predicting house prices.
@@ -29,16 +29,16 @@ This guided notebook follows the **content on the platform**. Some cells are **p
 
 ## 🌟 Exercise 1: Small Quiz
 
-**As stated in the instructions**
-- What is the key difference between traditional machine learning and deep learning?
-- How do artificial neural networks mimic the human brain?
-- Why does deep learning perform better on large datasets compared to traditional machine learning?
+**As stated in the instructions**  
+- What is the key difference between traditional machine learning and deep learning?  
+- How do artificial neural networks mimic the human brain?  
+- Why does deep learning perform better on large datasets compared to traditional machine learning?  
 - What are some challenges of deep learning, and how can they be addressed?
-- What is feature engineering, and why is it not needed in deep learning?
+- What is feature engineering, and why is it not needed in deep learning?  
 - What role do hidden layers play in a deep learning model?
 - In an artificial neural network, what is the function of an activation function?
 
-**Guidance**
+**Guidance**  
 Answer in full sentences. Use concise definitions first, then add one concrete example for any two questions to demonstrate understanding.
 
 **To-Do:** Write your answers below.
@@ -49,7 +49,7 @@ Answer in full sentences. Use concise definitions first, then add one concrete e
 
 3.) A: The more data the better for DL. NN's can actually overfit and deliver poor results due to small data.
 
-4.) A: Computational resources and processing costs. This can be addressed by using affordable cloud services that don't require have advanced machinery.
+4.) A: Computational resources and processing costs. This can be addressed by using affordable cloud services that don't require have advanced machinery.  
 
 5.) A: Feature engineering is using domain knowledge and deciding which features will bring the most relevant information to the model to result in an accurate output. This requires domain knowledge and human interaction. This is not needed in DL because the NN will automatically decide which features will be most relevant for the desired output.
 
@@ -59,7 +59,7 @@ Answer in full sentences. Use concise definitions first, then add one concrete e
 
 ## 🌟 Exercise 2: Building a Simple Perceptron Decision System
 
-**As stated in the instructions**
+**As stated in the instructions**  
 You will create a perceptron-based decision system to decide whether you should go outside based on two inputs:
 - Temperature in °F
 - Rainy where Yes is 1 and No is 0
@@ -70,14 +70,14 @@ Apply a step activation:
 - If Weighted Sum > 20, output 1
 - If Weighted Sum \le 20, output 0
 
-Evaluate:
-Case 1: Temperature 70°F, Rain 0
+Evaluate:  
+Case 1: Temperature 70°F, Rain 0  
 Case 2: Temperature 50°F, Rain 1
 
-**Guidance**
+**Guidance**  
 Implement the weighted sum function yourself. Use a reusable step activation. Then compute the two cases and print the decision for each.
 
-**Learning point**
+**Learning point**  
 A perceptron implements a linear decision boundary. The bias shifts the threshold. Use step activation for simple binary rules. Prefer differentiable activations when training with gradient descent.
 
 ![image.png](https://github.com/user-attachments/assets/3c4f3261-164d-4039-8e1c-aff2db7162dd)
