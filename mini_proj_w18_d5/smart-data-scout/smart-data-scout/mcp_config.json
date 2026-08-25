@@ -1,0 +1,17 @@
+{
+  "filesystem": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-filesystem", "./data"],
+    "description": "Third-party: read/write/list files in the local ./data directory"
+  },
+  "fetch": {
+    "command": "uvx",
+    "args": ["mcp-server-fetch"],
+    "description": "Third-party: fetch web pages and convert them to markdown"
+  },
+  "insights": {
+    "command": "python",
+    "args": ["insights_server.py"],
+    "description": "Your own server: CSV stats, correlation, outliers, report writing"
+  }
+}
