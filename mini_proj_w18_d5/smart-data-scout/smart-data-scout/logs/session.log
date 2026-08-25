@@ -79,3 +79,24 @@ file_path
 2026-08-25 11:42:05,739 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
 2026-08-25 11:42:05,817 | INFO | tool_call server=insights tool=describe_csv args={"file_path": "sample_sales.csv"} -> ok in 0.08s result={"shape": {"rows": 10, "columns": 4}, "dtypes": {"date": "str", "region": "str", "units_sold": "int64", "revenue": "int64"}, "missing_values": {"date": 0, "region": 0, "units_sold": 0, "revenue": 0}, "describe": {"date": {"count": 10, "unique": 10, "top": "2026-01-01", "freq": 1, "mean": "", "std": "", "min": "", "25%": "", "50%": "", "75%": "", "max": ""}, "region": {"count": 10, "unique": 4, "to...<458 more chars>
 2026-08-25 11:42:09,513 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
+2026-08-25 11:45:35,980 | INFO | Connected to filesystem (14 tools)
+2026-08-25 11:45:36,753 | INFO | Connected to fetch (1 tools)
+2026-08-25 11:45:37,862 | INFO | Connected to insights (4 tools)
+2026-08-25 11:45:39,490 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
+2026-08-25 11:45:39,495 | INFO | tool_call server=filesystem tool=list_directory args={"path": "/home/user/data"} -> ok in 0.00s result=Access denied - path outside allowed directories: C:\home\user\data not in C:\Users\gabri\DI_Bootcamp\mini_proj_w18_d5\smart-data-scout\smart-data-scout\data
+2026-08-25 11:45:40,890 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
+2026-08-25 11:52:41,640 | INFO | Connected to filesystem (14 tools)
+2026-08-25 11:52:42,975 | INFO | Connected to fetch (1 tools)
+2026-08-25 11:52:44,094 | INFO | Connected to insights (4 tools)
+2026-08-25 11:52:49,406 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
+2026-08-25 11:52:49,457 | INFO | tool_call server=filesystem tool=list_directory args={"path": "."} -> ok in 0.05s result=[FILE] sample_sales.csv
+2026-08-25 11:52:50,607 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
+2026-08-25 11:53:43,021 | INFO | Connected to filesystem (14 tools)
+2026-08-25 11:53:43,755 | INFO | Connected to fetch (1 tools)
+2026-08-25 11:53:44,854 | INFO | Connected to insights (4 tools)
+2026-08-25 11:53:46,836 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
+2026-08-25 11:53:46,841 | INFO | tool_call server=filesystem tool=list_directory args={"path": "."} -> ok in 0.00s result=[FILE] sample_sales.csv
+2026-08-25 11:53:46,846 | INFO | tool_call server=insights tool=describe_csv args={"file_path": "sales.csv"} -> ok in 0.00s result={"error": "File not found: sales.csv"}
+2026-08-25 11:53:47,994 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
+2026-08-25 11:53:48,010 | INFO | tool_call server=insights tool=describe_csv args={"file_path": "sample_sales.csv"} -> ok in 0.02s result={"shape": {"rows": 10, "columns": 4}, "dtypes": {"date": "str", "region": "str", "units_sold": "int64", "revenue": "int64"}, "missing_values": {"date": 0, "region": 0, "units_sold": 0, "revenue": 0}, "describe": {"date": {"count": 10, "unique": 10, "top": "2026-01-01", "freq": 1, "mean": "", "std": "", "min": "", "25%": "", "50%": "", "75%": "", "max": ""}, "region": {"count": 10, "unique": 4, "to...<458 more chars>
+2026-08-25 11:53:55,099 | INFO | HTTP Request: POST http://localhost:11434/api/chat "HTTP/1.1 200 OK"
