@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import time
+import httpx
 from contextlib import AsyncExitStack
 from dataclasses import dataclass, field
 from typing import Any, AsyncIterator, Optional
@@ -37,6 +38,9 @@ load_dotenv()
 DATA_DIR = os.environ.get("DATA_DIR", "./data")
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.1")
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "ollama").lower()
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.1-70b-versatile")
 MAX_STEPS = int(os.environ.get("MAX_STEPS", 8))
 MAX_RETRIES = int(os.environ.get("MAX_RETRIES", 2))
 RETRY_BACKOFF = float(os.environ.get("RETRY_BACKOFF_SECONDS", 1.5))
@@ -185,20 +189,55 @@ class Orchestrator:
         ]
 
         for step in range(1, MAX_STEPS + 1):
-            yield StepEvent("plan", f"Step {step}: asking {OLLAMA_MODEL} what to do next...")
+            active_model = GROQ_MODEL if LLM_PROVIDER == "groq" else OLLAMA_MODEL
+            yield StepEvent("plan", f"Step {step}: asking {active_model} ({LLM_PROVIDER}) what to do next...")
+            
             try:
-                response = await self.ollama.chat(
-                    model=OLLAMA_MODEL,
-                    messages=messages,
-                    tools=self.ollama_tools,
-                )
+                if LLM_PROVIDER == "groq":
+                    async with httpx.AsyncClient(timeout=60.0) as client:
+                        resp = await client.post(
+                            "https://api.groq.com/openai/v1/chat/completions",
+                            headers={
+                                "Authorization": f"Bearer {GROQ_API_KEY}",
+                                "Content-Type": "application/json",
+                            },
+                            json={
+                                "model": GROQ_MODEL,
+                                "messages": messages,
+                                "tools": self.ollama_tools,
+                            },
+                        )
+                        resp.raise_for_status()
+                        groq_data = resp.json()
+                        groq_msg = groq_data["choices"][0]["message"]
+                        
+                        tool_calls_formatted = []
+                        if groq_msg.get("tool_calls"):
+                            for tc in groq_msg["tool_calls"]:
+                                tool_calls_formatted.append({
+                                    "function": {
+                                        "name": tc["function"]["name"],
+                                        "arguments": tc["function"]["arguments"]
+                                    }
+                                })
+                        msg = {
+                            "role": "assistant",
+                            "content": groq_msg.get("content") or "",
+                            "tool_calls": tool_calls_formatted
+                        }
+                else:
+                    response = await self.ollama.chat(
+                        model=OLLAMA_MODEL,
+                        messages=messages,
+                        tools=self.ollama_tools,
+                    )
+                    msg = response["message"]
             except Exception as e:
                 logger.error("LLM call failed: %s", e)
                 yield StepEvent("error", f"LLM call failed: {e}")
-                yield StepEvent("final", f"Stopped early: could not reach Ollama model '{OLLAMA_MODEL}' ({e}).")
+                yield StepEvent("final", f"Stopped early: could not reach {LLM_PROVIDER} model ({e}).")
                 return
 
-            msg = response["message"]
             tool_calls = msg.get("tool_calls") or []
 
             if not tool_calls:
@@ -224,8 +263,6 @@ class Orchestrator:
 
                 if not ok:
                     yield StepEvent("error", result_text, tool=name)
-                    # Feed the error back so the LLM can adapt (retry a
-                    # different tool, fix args, or explain the failure).
                     result_text = f"ERROR: {result_text}"
                 else:
                     yield StepEvent("tool_result", _truncate(result_text, 300), tool=name)
