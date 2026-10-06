@@ -1,6 +1,7 @@
 import string
 import re
 from collections import Counter
+from typing import Optional
 
 
 class Text:
@@ -11,46 +12,51 @@ class Text:
     def __init__(self, text: str):
         self.text = text
 
-    # Helper method to get normalized list of words (lowercase & stripped)
     def _get_words(self) -> list[str]:
-        # Split on whitespace and normalize to lowercase for accurate counting
-        return [word.strip(string.punctuation).lower() for word in self.text.split() if word.strip(string.punctuation)]
+        """
+        Helper method to extract normalized words.
+        
+        Splits text on whitespace, strips leading/trailing punctuation,
+        and converts all tokens to lowercase for case-insensitive matching.
+        """
+        return [
+            word.strip(string.punctuation).lower()
+            for word in self.text.split()
+            if word.strip(string.punctuation)
+        ]
 
     # -------------------------------------------------------------------------
     # Part I Methods
     # -------------------------------------------------------------------------
-    def word_frequency(self, word: str):
+    def word_frequency(self, word: str) -> int:
         """
         Step 2: Counts occurrences of a specific word in the text.
-        Returns the count if found, or a message/None if not found.
+        
+        Performs case-insensitive matching. Returns 0 if the word is not found.
         """
         words = self._get_words()
-        target = word.lower()
-        count = words.count(target)
+        return words.count(word.lower())
 
-        if count == 0:
-            return f"The word '{word}' was not found in the text."
-        return count
-
-    def most_common_word(self) -> str:
+    def most_common_word(self) -> Optional[str]:
         """
         Step 3: Finds and returns the word with the highest frequency in the text.
+        
+        Returns None if the text contains no valid words.
         """
         words = self._get_words()
         if not words:
             return None
 
-        # Build frequency table
         counts = Counter(words)
         most_common, _ = counts.most_common(1)[0]
         return most_common
 
     def unique_words(self) -> list[str]:
         """
-        Step 4: Returns a list of unique words present in the text.
+        Step 4: Returns a sorted list of unique normalized words present in the text.
         """
         words = self._get_words()
-        return list(set(words))
+        return sorted(set(words))
 
     # -------------------------------------------------------------------------
     # Part II Class Method
@@ -73,7 +79,6 @@ class TextModification(Text):
     Subclass of Text providing text cleaning and normalization utilities.
     """
 
-    # Common English stop words
     STOP_WORDS = {
         "a", "about", "above", "after", "again", "against", "all", "am", "an", "and",
         "any", "are", "aren't", "as", "at", "be", "because", "been", "before", "being",
@@ -97,33 +102,34 @@ class TextModification(Text):
         "yourself", "yourselves"
     }
 
-    def remove_punctuation((self) -> str:
+    def remove_punctuation(self) -> str:
         """
         Step 7: Removes punctuation from self.text using string.punctuation.
         """
-        # Create translation table mapping punctuation characters to None
         translator = str.maketrans("", "", string.punctuation)
-        cleaned_text = self.text.translate(translator)
-        return cleaned_text
+        return self.text.translate(translator)
 
     def remove_stop_words(self) -> str:
         """
-        Step 8: Removes common English stop words from self.text.
+        Step 8: Removes common English stop words and surrounding punctuation.
         """
         words = self.text.split()
-        filtered = [word for word in words if word.lower().strip(string.punctuation) not in self.STOP_WORDS]
+        filtered = []
+        for word in words:
+            clean_word = word.strip(string.punctuation)
+            if clean_word.lower() not in self.STOP_WORDS and clean_word:
+                filtered.append(clean_word)
         return " ".join(filtered)
 
     def remove_special_characters(self) -> str:
         """
         Step 9: Removes special characters (keeping alphanumeric and spaces) using regex.
         """
-        cleaned_text = re.sub(r"[^a-zA-Z0-9\s]", "", self.text)
-        return cleaned_text
+        return re.sub(r"[^a-zA-Z0-9\s]", "", self.text)
 
 
 # ==============================================================================
-# Test Runner
+# Test Execution
 # ==============================================================================
 if __name__ == "__main__":
     sample_phrase = "A good book has no ending. A good book is an endless journey!"
@@ -131,11 +137,11 @@ if __name__ == "__main__":
     print("--- Part I: Basic Text Analysis ---")
     t = Text(sample_phrase)
 
-    print("Word Frequency ('good'):", t.word_frequency("good"))  # 2
-    print("Word Frequency ('python'):", t.word_frequency("python"))  # Message / None
-    print("Most Common Word:", t.most_common_word())  # 'a' or 'good' or 'book'
+    print("Word Frequency ('good'):", t.word_frequency("good"))  # Output: 2
+    print("Word Frequency ('python'):", t.word_frequency("python"))  # Output: 0
+    print("Most Common Word:", t.most_common_word())  # Output: 'a' or 'good' or 'book'
     print("Unique Words Count:", len(t.unique_words()))
-    print("Unique Words List:", sorted(t.unique_words()))
+    print("Unique Words List (Sorted):", t.unique_words())
 
     print("\n--- Bonus: Text Modification ---")
     mod = TextModification("Hello, World! This is a test string with @special #characters and punctuation!")
