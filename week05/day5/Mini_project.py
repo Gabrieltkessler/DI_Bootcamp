@@ -1,62 +1,116 @@
-import numpy as np
 import pandas as pd
-import seaborn as sns
+import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-df = pd.read_excel('US Superstore data.xls')
+# Set style for visualizations
+sns.set_theme(style="whitegrid")
+plt.rcParams["figure.figsize"] = (10, 6)
 
-# Task number 1: Which states have the most sales?
-states_array = df['State'].values
+# ==============================================================================
+# 1. LOAD & PREPROCESS DATASET
+# ==============================================================================
+file_path = 'US Superstore data.xls'
+df = pd.read_excel(file_path)
 
-states, counts = np.unique(states_array, return_counts=True)
+# Handle missing values (e.g., Postal Code for Burlington, Vermont)
+df['Postal Code'] = df['Postal Code'].fillna('05401')
 
-plt.figure(figsize=(12,6))
-plt.bar(states, counts, color=['red'])
-plt.xticks(rotation=90)
-plt.xlabel('States')
-plt.ylabel('Sales')
-plt.title('Which State Has The Most Sales')
+# Ensure date fields are in datetime format
+df['Order Date'] = pd.to_datetime(df['Order Date'])
+df['Ship Date'] = pd.to_datetime(df['Ship Date'])
+
+print("Data Preprocessing Complete.")
+print(f"Total Rows: {len(df)}, Total Columns: {len(df.columns)}")
+
+# ==============================================================================
+# QUESTION 1: Which states have the most sales?
+# ==============================================================================
+state_sales = df.groupby('State')['Sales'].sum().sort_values(ascending=False)
+print("\n--- Top 10 States by Sales ---")
+print(state_sales.head(10))
+
+# Visualizing Top 10 States by Sales
+plt.figure(figsize=(10, 5))
+sns.barplot(x=state_sales.head(10).values, y=state_sales.head(10).index, palette="Blues_r")
+plt.title("Top 10 States by Total Sales ($)", fontsize=14, fontweight="bold")
+plt.xlabel("Total Sales ($)")
+plt.ylabel("State")
+plt.tight_layout()
 plt.show()
 
-# task number 2: Find difference between New York and California in terms of sales and profit
+# ==============================================================================
+# QUESTION 2: What is the difference between New York and California in sales and profit?
+# ==============================================================================
+ny_ca = df[df['State'].isin(['New York', 'California'])].groupby('State')[['Sales', 'Profit']].sum()
+ny_ca['Profit Margin (%)'] = (ny_ca['Profit'] / ny_ca['Sales']) * 100
 
-ny_sales = df[df['State'] == 'New York']['Sales'].sum()
-ca_sales = df[df['State'] == 'California']['Sales'].sum()
+print("\n--- New York vs California Comparison ---")
+print(ny_ca)
 
-ny_profit = df[df['State'] == 'New York']['Profit'].sum()
-ca_profit = df[df['State'] == 'California']['Profit'].sum()
-
-ny_diff_sales = ny_sales - ca_sales
-ny_diff_profit = ny_profit - ca_profit
-
-absolute_ny_diff_sales = abs(ny_diff_sales)
-absolute_ny_diff_profit = abs(ny_diff_profit)
-
-print(f"Difference between New York and California in terms of sales:, {absolute_ny_diff_sales:.2f}")
-print(f"Difference between New York and California in terms of profit:, {absolute_ny_diff_profit:.2f}")
-
-# Difference between New York and California in terms of sales:, 146811.36
-# Difference between New York and California in terms of profit:, 2342.84
-
-# task number 3: Find an outstanding customer in New York.
-
-outstanding_customer = df[df['State'] == 'New York'].groupby('Customer Name')['Profit'].sum().idxmax()
-outstanding_customer_profit = df['Profit'].sum().max()
-print(f"The outstanding customer in New York is: {outstanding_customer} \n He brought the company ${outstanding_customer_profit:.2f} USD in profit")
-
-# The outstanding customer in New York is: Tom Ashbrook
-#  He brought the company $286397.02 USD in profit
-
-# Are there any differences among states in profitability?
-# Are there any differences among states in profitability?
-
-state_profit = df.groupby('State')['Profit'].sum()
-
-plt.figure(figsize=(12,6))
-plt.bar(state_profit.index, state_profit)
-plt.xticks(rotation=90)
-plt.xlabel('States')
-plt.ylabel('Profit')
-plt.title('Profitability Among States')
+# Visualization
+ny_ca_melted = pd.melt(ny_ca.reset_index(), id_vars=['State'], value_vars=['Sales', 'Profit'], var_name='Metric', value_name='Amount')
+plt.figure(figsize=(8, 5))
+sns.barplot(data=ny_ca_melted, x='State', y='Amount', hue='Metric', palette='Set2')
+plt.title("New York vs California: Total Sales & Profit ($)", fontsize=14, fontweight="bold")
+plt.ylabel("Amount ($)")
+plt.tight_layout()
 plt.show()
 
+# ==============================================================================
+# QUESTION 3: Who is an outstanding customer in New York?
+# ==============================================================================
+ny_customers = df[df['State'] == 'New York'].groupby(['Customer ID', 'Customer Name'])[['Sales', 'Profit']].sum()
+top_ny_customer = ny_customers.sort_values(by='Sales', ascending=False).head(1)
+
+print("\n--- Outstanding Customer in New York ---")
+print(top_ny_customer)
+
+# ==============================================================================
+# QUESTION 4: Are there any differences among states in profitability?
+# ==============================================================================
+state_profit = df.groupby('State')['Profit'].sum().sort_values(ascending=False)
+top_5_profitable = state_profit.head(5)
+bottom_5_unprofitable = state_profit.tail(5)
+
+print("\n--- Top 5 Most Profitable States ---")
+print(top_5_profitable)
+print("\n--- Top 5 Least Profitable States ---")
+print(bottom_5_unprofitable)
+
+# Visualization: Top vs Bottom States by Profit
+top_bottom_states = pd.concat([state_profit.head(5), state_profit.tail(5)])
+colors = ['green' if val > 0 else 'red' for val in top_bottom_states.values]
+
+plt.figure(figsize=(10, 5))
+sns.barplot(x=top_bottom_states.values, y=top_bottom_states.index, palette=colors)
+plt.title("Top 5 Most and Least Profitable States ($)", fontsize=14, fontweight="bold")
+plt.xlabel("Profit ($)")
+plt.tight_layout()
+plt.show()
+
+# ==============================================================================
+# QUESTION 5: Pareto Principle on Customers and Profit
+# (Determine if 20% of customers contribute to 80% of profit)
+# ==============================================================================
+cust_profit = df.groupby('Customer ID')['Profit'].sum().sort_values(ascending=False).reset_index()
+total_customers = len(cust_profit)
+total_profit = cust_profit['Profit'].sum()
+
+top_20_count = int(np.ceil(0.20 * total_customers))
+top_20_profit = cust_profit.iloc[:top_20_count]['Profit'].sum()
+top_20_profit_pct = (top_20_profit / total_profit) * 100
+
+print(f"\n--- Pareto Principle: Customers & Profit ---")
+print(f"Total Unique Customers: {total_customers}")
+print(f"Top 20% Customer Count: {top_20_count}")
+print(f"Percentage of Total Profit Generated by Top 20% Customers: {top_20_profit_pct:.2f}%")
+
+# Plotting Pareto Cumulative Profit Curve
+cust_profit['Cum_Profit'] = cust_profit['Profit'].cumsum()
+cust_profit['Cum_Profit_Pct'] = (cust_profit['Cum_Profit'] / total_profit) * 100
+cust_profit['Cust_Pct'] = (np.arange(1, total_customers + 1) / total_customers) * 100
+
+plt.figure(figsize=(9, 5))
+plt.plot(cust_profit['Cust_Pct'], cust_profit['Cum_Profit_Pct'], color='purple', linewidth=2.5, label='Cumulative Profit %')
+plt.axvline(20, color='red', linestyle='--', label='Top 20%
